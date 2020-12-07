@@ -1,3 +1,51 @@
 ﻿app.controller('TestController', function ($scope) {
-    $scope.testmessage = "Setup angularjs application in visual studio 2019 successfully ";
+    $scope.myJson = {
+        gui: {
+            contextMenu: {
+                button: {
+                    visible: false
+                }
+            }
+        },
+        globals: {
+            shadow: false
+        },
+        "background-color": "#FFF",
+        shapes: [
+            {
+                type: 'zingchart.maps',
+                options: {
+                    name: 'usa',
+                    style: {
+                        label: {
+                            visible: false
+                        },
+                        "background-color": "#7CA82B",
+                        "border-color": "#FFF",
+                        items: {
+                            "CA": {
+                                "background-color": "#C30"
+                            },
+                            "VA": {
+                                "background-color": "#00BAF0"
+                            },
+                            "TX": {
+                                "background-color": "#003849"
+                            },
+                            "MT": {
+                                "background-color": "#333"
+                            },
+                            "IL": {
+                                "background-color": "#F0F0F0"
+                            },
+                            "FL": {
+                                "background-color": "#D9D9D9"
+                            }
+                        }
+                    }
+                }
+            }
+        ]
+    };
 });
+
