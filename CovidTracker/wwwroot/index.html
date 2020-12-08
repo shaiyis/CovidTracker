@@ -8,11 +8,9 @@
     <script src="https://cdn.zingchart.com/angular/zingchart-angularjs.js"></script>
     <!-- <script src="js/TestController.js"></script>-->
 </head>
-<body ng-app="myApp">
+<body ng-app="myApp" ng-controller="MainController">
     <h1>Hello World</h1>
-    <div ng-controller="MainController">
-
-        <div zingchart id="chart-1" zc-json="myJson" zc-width="100%" zc-height="100%" style="overflow:visible;position:relative"></div>
+    <div zingchart id="chart-1" zc-json="myJson" zc-width="100%" zc-height="100%" style="overflow:visible;position:relative">
     </div>
     <script>
         zingchart.MODULESDIR = 'https://cdn.zingchart.com/2.9.2/modules/';
@@ -32,8 +30,7 @@
                 globals: {
                     shadow: false
                 },
-                "background-color": "#C30",
-                "position": "relative",
+                "background-color": "#FFFFFF",
                 shapes: [
                     {
                         type: 'zingchart.maps',
@@ -71,41 +68,18 @@
                     }
                 ]
             };
+           
         });
-
+       
     </script>
-    <!-- <script>
-         a = function myFunction() {
-             wow = ["chart-1", "char-1-map"]
-             for (i in wow) {
-                 var x = document.getElementById("chart-1-top");
-
-                 if (window.getComputedStyle(x).display === "none") {
-                     console.log(x.id + " is hidden");
-                 } else {
-                     console.log(x.id + " is not hidden");
-                 }
-             }
-         };
-         a();
-     </script>-->
-   <!-- <script>
-        function GetElementInsideContainer(containerID, childID) {
-            var elm = document.getElementById(childID);
-            var parent = elm ? elm.parentNode : {};
-            return (parent.id && parent.id === containerID) ? elm : {};
+    <script>
+        // make the map relative in the html
+        window.onload = function () {
+            var elementContainsMap = document.getElementById('chart-1');
+            elementContainsMap.children[0].children[0].style.position = "relative";
         }
-        var e = GetElementInsideContainer("chart-1", "chart-1-wrapper");
-        var x = document.querySelector("#div1").querySelector("#edit2");
+    </script>
 
-        if (window.getComputedStyle(x).display === "none") {
-            console.log(x.id + " is hidden");
-        } else {
-            console.log(x.id + " is not hidden");
-        }
-
-    </script>-->
-   
 </body>
 
 </html>
