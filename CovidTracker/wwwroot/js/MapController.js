@@ -1,4 +1,8 @@
-﻿app.controller('TestController', function ($scope) {
+﻿app.controller('MapController', function ($scope,$http) {
+    $http.get('index.html')
+        .then(function (response) {
+            console.log("got message");
+        });
     $scope.myJson = {
         gui: {
             contextMenu: {
@@ -10,7 +14,7 @@
         globals: {
             shadow: false
         },
-        "background-color": "#FFF",
+        "background-color": "#FFFFFF",
         shapes: [
             {
                 type: 'zingchart.maps',
@@ -18,7 +22,8 @@
                     name: 'usa',
                     style: {
                         label: {
-                            visible: false
+                            visible: true
+
                         },
                         "background-color": "#7CA82B",
                         "border-color": "#FFF",
@@ -30,7 +35,7 @@
                                 "background-color": "#00BAF0"
                             },
                             "TX": {
-                                "background-color": "#003849"
+                                "background-color": "#FFFF00"
                             },
                             "MT": {
                                 "background-color": "#333"
@@ -47,5 +52,5 @@
             }
         ]
     };
-});
 
+});

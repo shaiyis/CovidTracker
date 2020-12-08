@@ -8,77 +8,38 @@
     <script src="https://cdn.zingchart.com/angular/zingchart-angularjs.js"></script>
     <!-- <script src="js/TestController.js"></script>-->
 </head>
-<body ng-app="myApp" ng-controller="MainController">
-    <h1>Hello World</h1>
-    <div zingchart id="chart-1" zc-json="myJson" zc-width="100%" zc-height="100%" style="overflow:visible;position:relative">
+<body ng-app="myApp">
+    <h1>Covid-19 US Map</h1>
+    <div ng-controller="MapController">
+        <div zingchart id="the-map" zc-json="myJson" zc-width="100%" zc-height="100%" />
     </div>
+    <div ng-controller="GraphController">
+        <div zingchart id="the-graph" zc-json="myJson" zc-width="100%" zc-height="500px" style="visibility: hidden"></div>
+       
+    </div>
+    <style src="css/GraphStyle.css">
+    </style>
     <script>
         zingchart.MODULESDIR = 'https://cdn.zingchart.com/2.9.2/modules/';
         zingchart.loadModules('maps,maps-world-countries,maps-usa');
-        var app = angular.module('myApp', ['zingchart-angularjs']);
-        console.log(app);
-
-        app.controller('MainController', function ($scope) {
-            $scope.myJson = {
-                gui: {
-                    contextMenu: {
-                        button: {
-                            visible: false
-                        }
-                    }
-                },
-                globals: {
-                    shadow: false
-                },
-                "background-color": "#FFFFFF",
-                shapes: [
-                    {
-                        type: 'zingchart.maps',
-                        options: {
-                            name: 'usa',
-                            style: {
-                                label: {
-                                    visible: true
-
-                                },
-                                "background-color": "#7CA82B",
-                                "border-color": "#FFF",
-                                items: {
-                                    "CA": {
-                                        "background-color": "#C30"
-                                    },
-                                    "VA": {
-                                        "background-color": "#00BAF0"
-                                    },
-                                    "TX": {
-                                        "background-color": "#FFFF00"
-                                    },
-                                    "MT": {
-                                        "background-color": "#333"
-                                    },
-                                    "IL": {
-                                        "background-color": "#F0F0F0"
-                                    },
-                                    "FL": {
-                                        "background-color": "#D9D9D9"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                ]
-            };
-           
-        });
-       
+        zingchart.shape_click = function (e) {
+            console.log(arguments);
+            var graph = document.getElementById("the-graph");
+            graph.style.visibility = "visible";
+            
+        };
     </script>
+    <script src="js/App.js"></script>
+
+    <script src="js/MapController.js"></script>
     <script>
         // make the map relative in the html
         window.onload = function () {
-            var elementContainsMap = document.getElementById('chart-1');
+            var elementContainsMap = document.getElementById('the-map');
             elementContainsMap.children[0].children[0].style.position = "relative";
         }
     </script>
+    <script src="js/GraphController.js"></script>
 
 </body>
 
