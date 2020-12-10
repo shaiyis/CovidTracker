@@ -6,6 +6,10 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular.min.js"></script>
     <script src="https://cdn.zingchart.com/zingchart.min.js"></script>
     <script src="https://cdn.zingchart.com/angular/zingchart-angularjs.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <link rel="icon" type="image/png" href="lib/images/favicon.png" />
+
     <!-- <script src="js/TestController.js"></script>-->
 </head>
 <body ng-app="myApp">
@@ -14,8 +18,7 @@
         <div zingchart id="the-map" zc-json="myJson" zc-width="100%" zc-height="100%" />
     </div>
     <div ng-controller="GraphController">
-        <div zingchart id="the-graph" zc-json="myJson" zc-width="100%" zc-height="500px" style="visibility: hidden"></div>
-       
+        <div zingchart id="the-graph" zc-json="myJson" zc-width="100%" zc-height="500px" style="visibility: hidden; padding: 20px"></div> 
     </div>
     <style src="css/GraphStyle.css">
     </style>
@@ -24,8 +27,35 @@
         zingchart.loadModules('maps,maps-world-countries,maps-usa');
         zingchart.shape_click = function (e) {
             console.log(arguments);
+           
             var graph = document.getElementById("the-graph");
             graph.style.visibility = "visible";
+            var shape = arguments[0].shapeid;
+            //$http.get
+            if (shape == "MT") {
+                zingchart.exec("the-graph", 'setseriesdata', {
+                    graphid: 0,
+                    plotindex: 0,
+
+                    data: {
+                        values: [0, 15, 20, 25],
+                        lineColor: 'red'
+                    }
+                });
+            } else {
+                zingchart.exec("the-graph", 'setseriesdata', {
+                    graphid: 0,
+                    plotindex: 0,
+
+                    data: {
+
+                        values: [0, 30, 100, 100],
+                        lineColor: 'red'
+                    }
+                });
+            }
+            
+           
             
         };
     </script>
@@ -40,6 +70,7 @@
         }
     </script>
     <script src="js/GraphController.js"></script>
+
 
 </body>
 
