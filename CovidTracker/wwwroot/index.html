@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <title>AngularJs Sample</title>
+    <title>Covid-19 in the US</title>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular.min.js"></script>
     <script src="https://cdn.zingchart.com/zingchart.min.js"></script>
     <script src="https://cdn.zingchart.com/angular/zingchart-angularjs.js"></script>
@@ -13,10 +13,10 @@
     <!-- <script src="js/TestController.js"></script>-->
 </head>
 <body ng-app="myApp">
-    <h1>Covid-19 US Map</h1>
     <div ng-controller="MapController">
         <div zingchart id="the-map" zc-json="myJson" zc-width="100%" zc-height="100%" />
     </div>
+    <p id="casualties" style="visibility:hidden;text-align:center;font-size:50px;font-family:Gisha";> {{currentState}} has {{numberOfConfirmedCases}} confirmed cases per 100,000 residents</p>
     <div ng-controller="GraphController">
         <div zingchart id="the-graph" zc-json="myJson" zc-width="100%" zc-height="500px" style="visibility: hidden; padding: 20px"></div> 
     </div>
@@ -24,40 +24,8 @@
     </style>
     <script>
         zingchart.MODULESDIR = 'https://cdn.zingchart.com/2.9.2/modules/';
-        zingchart.loadModules('maps,maps-world-countries,maps-usa');
-        zingchart.shape_click = function (e) {
-            console.log(arguments);
-           
-            var graph = document.getElementById("the-graph");
-            graph.style.visibility = "visible";
-            var shape = arguments[0].shapeid;
-            //$http.get
-            if (shape == "MT") {
-                zingchart.exec("the-graph", 'setseriesdata', {
-                    graphid: 0,
-                    plotindex: 0,
-
-                    data: {
-                        values: [0, 15, 20, 25],
-                        lineColor: 'red'
-                    }
-                });
-            } else {
-                zingchart.exec("the-graph", 'setseriesdata', {
-                    graphid: 0,
-                    plotindex: 0,
-
-                    data: {
-
-                        values: [0, 30, 100, 100],
-                        lineColor: 'red'
-                    }
-                });
-            }
-            
-           
-            
-        };
+        zingchart.loadModules('maps,maps-usa');
+        
     </script>
     <script src="js/App.js"></script>
 
