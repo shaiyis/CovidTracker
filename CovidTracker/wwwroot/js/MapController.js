@@ -1,5 +1,30 @@
 ﻿app.controller('MapController', function ($scope, $http) {
 
+    var countryOfpatients = {};
+    countryOfpatients["WA"] = "900"
+    countryOfpatients["OR"] = "600"
+    countryOfpatients["IL"] = "800"
+
+
+
+    var countryNumberPeople = {};
+    countryNumberPeople["WA"] = "1000"
+    countryNumberPeople["OR"] = "1000"
+    countryNumberPeople["IL"] = "1000"
+
+
+    var contryColor = {}
+    for (var key of Object.keys(countryOfpatients)) {
+        if (countryOfpatients[key] / countryNumberPeople[key] > 0.75) {
+            contryColor[key] = "#a82b48"
+        }
+        if (countryOfpatients[key] / countryNumberPeople[key] > 0.5 && countryOfpatients[key] / countryNumberPeople[key] <= 0.75) {
+            contryColor[key] = "#e38a0e"
+        }
+        if (countryOfpatients[key] / countryNumberPeople[key] <= 0.5) {
+            contryColor[key] = "#7CA82B"
+        }
+    }
     $scope.myJson = {
         gui: {
             contextMenu: {
@@ -25,30 +50,24 @@
                         "background-color": "#7CA82B",
                         "border-color": "#FFF",
                         items: {
-                            "CA": {
-                                "background-color": "#C30"
-                            },
-                            "VA": {
-                                "background-color": "#00BAF0"
-                            },
-                            "TX": {
-                                "background-color": "#FFFF00"
-                            },
-                            "MT": {
-                                "background-color": "#333"
-                            },
-                            "IL": {
-                                "background-color": "#F0F0F0"
-                            },
-                            "FL": {
-                                "background-color": "#D9D9D9"
-                            }
+                           // "WA": {
+                           //     "background-color": contryColor["WA"]
+                           // },
+                            //"VA": {
+                          //      "background-color": "#e38a0e"
+                           // },
                         }
                     }
                 }
             }
         ]
     };
+    for (var key of Object.keys(contryColor)) {
+        var color = contryColor[key];
+        $scope.myJson.shapes[0].options.style.items[key] = {
+            "background-color": color
+        }
+    }
     zingchart.shape_click = function (e) {
         console.log(arguments);
 
@@ -123,3 +142,4 @@
     };
 
 });
+
