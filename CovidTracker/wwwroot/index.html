@@ -13,31 +13,96 @@
     <!-- <script src="js/TestController.js"></script>-->
 </head>
 <body ng-app="myApp">
+    <div ng-controller="AllUsaController">
+        <p id="all-casualties" style="visibility: hidden;text-align: center; font-size: 50px; font-family: Gisha; margin: 20px">
+            USA has {{percent}}% casualties
+        </p>
+    </div>
     <div ng-controller="MapController">
         <div zingchart id="the-map" zc-json="myJson" zc-width="100%" zc-height="100%" />
     </div>
-    <p id="casualties" style="visibility:hidden;text-align:center;font-size:50px;font-family:Gisha";> {{currentState}} has {{numberOfConfirmedCases}} confirmed cases per 100,000 residents</p>
+    <p id="casualties" style="visibility: hidden;text-align:center; font-size: 30px; font-family: Gisha; margin: 20px">
+        Months with biggest growth in casualties in {{currentState}}
+    </p>
+    <table id="table-growth" class="styled-table" style="visibility: hidden">
+        <thead>
+            <tr>
+                <th>Month</th>
+                <th>Growth</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="x in months">
+                <td>
+                    {{ x.month }}
+                </td>
+                <td>
+                {{ x.grow }}
+                </td>
+            </tr>
+        </tbody>     
+    </table>
+    <p id="graph-title" style="visibility: hidden;text-align:center; font-size: 40px; font-family: Gisha; margin-top: 20px">
+        Covid-19 over time<br />{{currentState}}
+    </p>
     <div ng-controller="GraphController">
-        <div zingchart id="the-graph" zc-json="myJson" zc-width="100%" zc-height="500px" style="visibility: hidden; padding: 20px"></div> 
+
+        <div zingchart id="the-graph" zc-json="myJson" zc-width="100%" zc-height="500px" style="visibility: hidden"></div>
     </div>
     <style src="css/GraphStyle.css">
+    </style>
+    <style>
+        .styled-table {
+            border-collapse: collapse;
+            margin-left: auto;
+            margin-right: auto;
+            margin-bottom: 30px;
+            font-size: 0.9em;
+            font-family: sans-serif;
+            min-width: 200px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+        }
+
+            .styled-table thead tr {
+                background-color: #009879;
+                color: #ffffff;
+                text-align: left;
+            }
+
+            .styled-table th, .styled-table td {
+                padding: 10px 10px;
+            }
+
+            .styled-table tbody tr {
+                border-bottom: 1px solid #dddddd;
+            }
+
+                .styled-table tbody tr:nth-of-type(even) {
+                    background-color: #f3f3f3;
+                }
+
+                .styled-table tbody tr:last-of-type {
+                    border-bottom: 2px solid #009879;
+                }
     </style>
     <script>
         zingchart.MODULESDIR = 'https://cdn.zingchart.com/2.9.2/modules/';
         zingchart.loadModules('maps,maps-usa');
-        
     </script>
     <script src="js/App.js"></script>
-
+    <script src="js/AllUsaController.js"></script>
     <script src="js/MapController.js"></script>
+    <script src="js/GraphController.js"></script>
+
     <script>
         // make the map relative in the html
         window.onload = function () {
             var elementContainsMap = document.getElementById('the-map');
             elementContainsMap.children[0].children[0].style.position = "relative";
+            var allCasualties = document.getElementById("all-casualties");
+            allCasualties.style.visibility = "visible";
         }
     </script>
-    <script src="js/GraphController.js"></script>
 
 
 </body>
