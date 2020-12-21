@@ -1,18 +1,35 @@
 ﻿app.controller('MapController', function ($scope, $http) {
+    var percents = {}
+    // check percents for each country
+    $http.get('index.html')
+        .then(function success(response) {
+            console.log("this is a success")
+            if (response.status != 200) {
+                console.log(response.statusText);
+            } else {
+                percents = response.data;
+            }
 
+            //  $scope.months = response.data
+        }, function error(response) {
+            console.log(response.statusText);
+        });
+ 
+    
     var countryOfpatients = {};
     countryOfpatients["WA"] = "900"
     countryOfpatients["OR"] = "600"
     countryOfpatients["IL"] = "800"
-
+    countryOfpatients["OH"] = "600"
 
 
     var countryNumberPeople = {};
     countryNumberPeople["WA"] = "1000"
     countryNumberPeople["OR"] = "1000"
     countryNumberPeople["IL"] = "1000"
+    countryNumberPeople["OH"] = "1000"
 
-
+    //check how we get back and iterate on this 
     var contryColor = {}
     for (var key of Object.keys(countryOfpatients)) {
         if (countryOfpatients[key] / countryNumberPeople[key] > 0.75) {
@@ -71,14 +88,11 @@
     zingchart.shape_click = function (e) {
         console.log(arguments);
 
+        $('#modal').modal('show');
         var graph = document.getElementById("the-graph");
         graph.style.visibility = "visible";
         var shape = arguments[0].shapeid;
         var currentState = zingchart.maps.getItemInfo('usa', shape).tooltip.text;
-        var paragraph = document.getElementById("casualties");
-        paragraph.style.visibility = "visible";
-        var table = document.getElementById("table-growth");
-        table.style.visibility = "visible";
         var graphTitle = document.getElementById("graph-title");
         graphTitle.style.visibility = "visible";
         $scope.currentState = currentState;
@@ -130,6 +144,21 @@
                 }
             });
         }
+
+        // get month with greatest growth for each city
+        $http.get('index.html')
+            .then(function success(response) {
+                console.log("this is a success")
+                if (response.status != 200) {
+                    console.log(response.statusText);
+                } else {
+                    $scope.cities = [{ city: "noa", month: "July" }, { city: "Gilad", month: "August" }, { city: "Israel", month: "September" }];
+                }
+
+                //  $scope.months = response.data
+            }, function error(response) {
+                console.log(response.statusText);
+            });
         /* zingchart.exec('the-graph', 'modify', {
              graphid: 0,
              data: {
