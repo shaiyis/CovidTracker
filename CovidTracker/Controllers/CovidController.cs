@@ -41,7 +41,7 @@ namespace CovidTracker.Controllers
 
         [HttpGet]
         [Route("/covid/state_graph")]
-        public ActionResult InfectedGraphPerState(string state_str_id)
+        public ActionResult InfectedGraphPerState([FromQuery(Name = "state_str_id")] string state_str_id)
         {
 
             List <KeyValuePair<int, int>> res = manager.InfectedGraphPerState(state_str_id);
@@ -56,7 +56,7 @@ namespace CovidTracker.Controllers
         
         [HttpGet]
         [Route("/covid/county_growth")]
-        public ActionResult TopMonthGrowthForCounty(string state_str_id)
+        public ActionResult TopMonthGrowthForCounty([FromQuery(Name = "state_str_id")] string state_str_id)
         {
             List<KeyValuePair<string, string>> res = manager.TopMonthGrowthForCounty(state_str_id);
             if (res == null)
@@ -68,7 +68,7 @@ namespace CovidTracker.Controllers
 
         [HttpGet]
         [Route("/covid/state_growth")]
-        public ActionResult TopMonthsGrowthForState(string state_str_id)
+        public ActionResult TopMonthsGrowthForState([FromQuery(Name = "state_str_id")] string state_str_id)
         {
             List<KeyValuePair<string, int>> res = manager.TopMonthsGrowthForState(state_str_id);
             if (res == null)
