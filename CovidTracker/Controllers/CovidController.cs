@@ -44,31 +44,9 @@ namespace CovidTracker.Controllers
         public ActionResult InfectedGraphPerState([FromQuery(Name = "state_str_id")] string state_str_id)
         {
 
-            //List <KeyValuePair<int, int>> res = manager.InfectedGraphPerState(state_str_id);
-            /* List<Dictionary<long, long>> res = new List<Dictionary<long, long>>() { new Dictionary<string, long>() { { "df": 2} }, new Dictionary<long, long>(1576108886400, 42), new Dictionary<long, long>(1576108972800, 82)};*/
-            /* var res = new List<Dictionary<string, string>>()
-             {
-                 new Dictionary<string, string>()
-                 {
-                     { "city", "noa" },
-                     {"month" , "July" }
-                 },
-                 new Dictionary<string, string>()
-                 {
-                     { "city", "gilad" },
-                     {"month" , "asher" }
-                 },
-                 new Dictionary<string, string>()
-                 {
-                     { "city", "noa" },
-                     {"month" , "July" }
-                 },
-                 new Dictionary<string, string>()
-                 {
-                     { "city", "noa" },
-                     {"month" , "July" }
-                 }
-             };*/
+            //var res = manager.InfectedGraphPerState(state_str_id);
+
+           
             var res = new List<Dictionary<string, long>>()
              {
                  new Dictionary<string, long>()

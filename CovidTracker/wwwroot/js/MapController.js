@@ -1,7 +1,24 @@
 ﻿app.controller('MapController', function ($scope, $http) {
     var percents = {}
+
     // check percents for each country
-    $http.get('index.html')
+    $http.get('map_coloring')
+        .then(function success(response) {
+            console.log("this is a success")
+            if (response.status != 200) {
+                console.log(response.statusText);
+            } else {
+                percents = response.data;
+                // keys: state_str_id, percent
+            }
+
+            //  $scope.months = response.data
+        }, function error(response) {
+            console.log(response.statusText);
+        });
+
+    // all USA
+    $http.get('usa_avg')
         .then(function success(response) {
             console.log("this is a success")
             if (response.status != 200) {
@@ -9,6 +26,7 @@
             } else {
                 percents = response.data;
             }
+         // keys: percent
 
             //  $scope.months = response.data
         }, function error(response) {
@@ -88,13 +106,13 @@
     zingchart.shape_click = function (e) {
         console.log(arguments);
 
-       // $('#modal').modal('show');
+        $('#modal').modal('show');
         // make graph visible
         var graph = document.getElementById("the-graph");
         graph.style.visibility = "visible";
         // get the current state
-        var shape = arguments[0].shapeid;
-        var currentState = zingchart.maps.getItemInfo('usa', shape).tooltip.text;
+        var state_str_id = arguments[0].shapeid;
+        var currentState = zingchart.maps.getItemInfo('usa', state_str_id).tooltip.text;
         var graphTitle = document.getElementById("graph-title");
         graphTitle.style.visibility = "visible";
         $scope.currentState = currentState;
@@ -107,7 +125,8 @@
                 if (response.status != 200) {
                     console.log(response.statusText);
                 } else {
-                    $scope.months = [{ month: "February", grow: 800 }, { month: "March", grow: 600 }, { month: "April", grow: 500 }];
+                    //keys: month, growth
+                    $scope.months = [{ month: "February", growth: 800 }, { month: "March", growth: 600 }, { month: "April", growth: 500 }];
                 }
 
                 //  $scope.months = response.data
@@ -117,7 +136,8 @@
 
 
         // get all casualties for the state for the last 6 months
-        $http.get('covid/state_graph')
+        var getStateUrl = 'covid/state_graph' + "?state_str_id=" + state_str_id
+        $http.get(getStateUrl)
             .then(function (response) {
                 console.log("got message");
                 if (response.status != 200) {
@@ -125,6 +145,8 @@
                 } else {
                     var listFromJson = angular.fromJson(response.data);
                     var listForGraph = [];
+                    //keys: month_as_number, cases
+
                     listFromJson.forEach(function (item) {
                         // -1 to match index of graph
                         listForGraph.push([item["month_as_number"]-1, item["cases"]]);
@@ -132,7 +154,7 @@
 
                     );
                         
-                    if (shape == "MT") {
+                    if (state_str_id == "MT") {
                         zingchart.exec('the-graph', 'setseriesdata', {
                             graphid: 0,
                             plotindex: 0,
@@ -162,14 +184,16 @@
             });
         
 
-        // get month with greatest growth for each city
-        $http.get('index.html')
+        // get month with greatest growth for each county
+        var getCountyUrl = 'covid/county_growth' + "?state_str_id=" + state_str_id
+        $http.get(getCountyUrl)
             .then(function success(response) {
                 console.log("this is a success")
                 if (response.status != 200) {
                     console.log(response.statusText);
                 } else {
-                    $scope.cities = [{ city: "noa", month: "July" }, { city: "Gilad", month: "August" }, { city: "Israel", month: "September" }];
+                    // keys: county, month
+                    $scope.counties = [{ county: "noa", month: "July" }, { county: "Gilad", month: "August" }, { county: "Israel", month: "September" }];
                 }
 
                 //  $scope.months = response.data
@@ -177,7 +201,7 @@
                 console.log(response.statusText);
             });
         // zoom to map
-        zingchart.maps.zoomToItem('usa', shape);
+        zingchart.maps.zoomToItem('usa', state_str_id);
     };
 
 });
