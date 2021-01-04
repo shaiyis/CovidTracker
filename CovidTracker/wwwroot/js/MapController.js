@@ -23,6 +23,7 @@
     countryOfpatients["OH"] = "600"
 
 
+
     var countryNumberPeople = {};
     countryNumberPeople["WA"] = "1000"
     countryNumberPeople["OR"] = "1000"
