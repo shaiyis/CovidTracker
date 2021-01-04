@@ -125,8 +125,8 @@
                 if (response.status != 200) {
                     console.log(response.statusText);
                 } else {
-                    //keys: month, growth
-                    $scope.months = [{ month: "February", growth: 800 }, { month: "March", growth: 600 }, { month: "April", growth: 500 }];
+                    //keys: max_diff_month, growth
+                    $scope.months = [{ max_diff_month: "February", growth: 800 }, { max_diff_month: "March", growth: 600 }, { max_diff_month: "April", growth: 500 }];
                 }
 
                 //  $scope.months = response.data

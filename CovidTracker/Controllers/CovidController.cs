@@ -25,6 +25,19 @@ namespace CovidTracker.Controllers
             return Ok("Welcome to my server!");
         }
 
+        //1
+        [HttpGet]
+        [Route("state_growth")]
+        public ActionResult TopMonthsGrowthForState([FromQuery(Name = "state_str_id")] string state_str_id)
+        {
+            var res = manager.TopMonthsGrowthForState(state_str_id);
+            if (res == null)
+            {
+                return BadRequest("Connection failure");
+            }
+            return Ok(res);
+        }
+
 
         [HttpGet]
         [Route("usa_avg")]
@@ -39,15 +52,17 @@ namespace CovidTracker.Controllers
             return Ok(avg);
         }
 
+
+        // 3
         [HttpGet]
         [Route("state_graph")]
         public ActionResult InfectedGraphPerState([FromQuery(Name = "state_str_id")] string state_str_id)
         {
 
-            //var res = manager.InfectedGraphPerState(state_str_id);
+            var res = manager.InfectedGraphPerState(state_str_id);
 
-           
-            var res = new List<Dictionary<string, long>>()
+           // todo delete this example
+            /*var res = new List<Dictionary<string, long>>()
              {
                  new Dictionary<string, long>()
                  {
@@ -94,7 +109,7 @@ namespace CovidTracker.Controllers
                      { "month_as_number", 11 },
                      { "cases" , 157359 }
                  },
-             };
+             };*/
 
             if (res == null)
             {
@@ -109,19 +124,7 @@ namespace CovidTracker.Controllers
         [Route("county_growth")]
         public ActionResult TopMonthGrowthForCounty([FromQuery(Name = "state_str_id")] string state_str_id)
         {
-            List<KeyValuePair<string, string>> res = manager.TopMonthGrowthForCounty(state_str_id);
-            if (res == null)
-            {
-                return BadRequest("Connection failure");
-            }
-            return Ok(res);
-        }
-
-        [HttpGet]
-        [Route("state_growth")]
-        public ActionResult TopMonthsGrowthForState([FromQuery(Name = "state_str_id")] string state_str_id)
-        {
-            List<KeyValuePair<string, int>> res = manager.TopMonthsGrowthForState(state_str_id);
+            var res = manager.TopMonthGrowthForCounty(state_str_id);
             if (res == null)
             {
                 return BadRequest("Connection failure");
@@ -133,7 +136,7 @@ namespace CovidTracker.Controllers
         [Route("map_coloring")]
         public ActionResult UpdatedPercentPerState()
         {
-            List<KeyValuePair<string, int>> res = manager.UpdatedPercentPerState();
+            var res = manager.UpdatedPercentPerState();
             if (res == null)
             {
                 return BadRequest("Connection failure");
