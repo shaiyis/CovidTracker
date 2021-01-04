@@ -30,7 +30,7 @@ namespace CovidTracker.Controllers
         [Route("usa_avg")]
         public ActionResult GetAvgOfAfectedAllUSA()
         {
-            
+
             string avg = manager.GetAvgOfAfectedAllUSA();
             if (avg == null)
             {
@@ -45,7 +45,78 @@ namespace CovidTracker.Controllers
         {
 
             //List <KeyValuePair<int, int>> res = manager.InfectedGraphPerState(state_str_id);
-            List <KeyValuePair<long, long>> res = new List<KeyValuePair<long, long>>() { new KeyValuePair<long, long>(1576108800000, 2), new KeyValuePair<long, long>(1576108886400, 42), new KeyValuePair<long, long>(1576108972800, 82)};
+            /* List<Dictionary<long, long>> res = new List<Dictionary<long, long>>() { new Dictionary<string, long>() { { "df": 2} }, new Dictionary<long, long>(1576108886400, 42), new Dictionary<long, long>(1576108972800, 82)};*/
+            /* var res = new List<Dictionary<string, string>>()
+             {
+                 new Dictionary<string, string>()
+                 {
+                     { "city", "noa" },
+                     {"month" , "July" }
+                 },
+                 new Dictionary<string, string>()
+                 {
+                     { "city", "gilad" },
+                     {"month" , "asher" }
+                 },
+                 new Dictionary<string, string>()
+                 {
+                     { "city", "noa" },
+                     {"month" , "July" }
+                 },
+                 new Dictionary<string, string>()
+                 {
+                     { "city", "noa" },
+                     {"month" , "July" }
+                 }
+             };*/
+            var res = new List<Dictionary<string, long>>()
+             {
+                 new Dictionary<string, long>()
+                 {
+                     { "month_as_number", 3 },
+                     {"cases" , 564 }
+                 },
+                 new Dictionary<string, long>()
+                 {
+                     { "month_as_number", 4 },
+                     { "cases" , 3281 }
+                 },
+                 new Dictionary<string, long>()
+                 {
+                     { "month_as_number", 5 },
+                     { "cases" , 7253 }
+                 },
+                 new Dictionary<string, long>()
+                 {
+                     { "month_as_number", 6 },
+                     { "cases" , 20777 }
+                 },
+                 new Dictionary<string, long>()
+                 {
+                     { "month_as_number", 7 },
+                     { "cases" , 42511 }
+                 },
+                 new Dictionary<string, long>()
+                 {
+                     { "month_as_number", 8 },
+                     { "cases" , 61224 }
+                 },
+                 new Dictionary<string, long>()
+                 {
+                     { "month_as_number", 9 },
+                     { "cases" , 83697 }
+                 },
+                 new Dictionary<string, long>()
+                 {
+                     { "month_as_number", 10 },
+                     { "cases" , 112190 }
+                 },
+                 new Dictionary<string, long>()
+                 {
+                     { "month_as_number", 11 },
+                     { "cases" , 157359 }
+                 },
+             };
 
             if (res == null)
             {
@@ -55,7 +126,7 @@ namespace CovidTracker.Controllers
         }
 
 
-        
+
         [HttpGet]
         [Route("county_growth")]
         public ActionResult TopMonthGrowthForCounty([FromQuery(Name = "state_str_id")] string state_str_id)
