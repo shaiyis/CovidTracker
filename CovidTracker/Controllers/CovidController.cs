@@ -27,7 +27,7 @@ namespace CovidTracker.Controllers
 
 
         [HttpGet]
-        [Route("/covid/usa_avg")]
+        [Route("usa_avg")]
         public ActionResult GetAvgOfAfectedAllUSA()
         {
             
@@ -40,11 +40,13 @@ namespace CovidTracker.Controllers
         }
 
         [HttpGet]
-        [Route("/covid/state_graph")]
+        [Route("state_graph")]
         public ActionResult InfectedGraphPerState([FromQuery(Name = "state_str_id")] string state_str_id)
         {
 
-            List <KeyValuePair<int, int>> res = manager.InfectedGraphPerState(state_str_id);
+            //List <KeyValuePair<int, int>> res = manager.InfectedGraphPerState(state_str_id);
+            List <KeyValuePair<long, long>> res = new List<KeyValuePair<long, long>>() { new KeyValuePair<long, long>(1576108800000, 2), new KeyValuePair<long, long>(1576108886400, 42), new KeyValuePair<long, long>(1576108972800, 82)};
+
             if (res == null)
             {
                 return BadRequest("Connection failure");
@@ -55,7 +57,7 @@ namespace CovidTracker.Controllers
 
         
         [HttpGet]
-        [Route("/covid/county_growth")]
+        [Route("county_growth")]
         public ActionResult TopMonthGrowthForCounty([FromQuery(Name = "state_str_id")] string state_str_id)
         {
             List<KeyValuePair<string, string>> res = manager.TopMonthGrowthForCounty(state_str_id);
@@ -67,7 +69,7 @@ namespace CovidTracker.Controllers
         }
 
         [HttpGet]
-        [Route("/covid/state_growth")]
+        [Route("state_growth")]
         public ActionResult TopMonthsGrowthForState([FromQuery(Name = "state_str_id")] string state_str_id)
         {
             List<KeyValuePair<string, int>> res = manager.TopMonthsGrowthForState(state_str_id);
@@ -79,7 +81,7 @@ namespace CovidTracker.Controllers
         }
 
         [HttpGet]
-        [Route("/covid/map_coloring")]
+        [Route("map_coloring")]
         public ActionResult UpdatedPercentPerState()
         {
             List<KeyValuePair<string, int>> res = manager.UpdatedPercentPerState();
