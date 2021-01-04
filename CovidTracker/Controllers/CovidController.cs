@@ -62,7 +62,7 @@ namespace CovidTracker.Controllers
 
             var res = manager.InfectedGraphPerState(state_str_id);
 
-           // todo delete this example
+           // todo  delete this example
             /*var res = new List<Dictionary<string, long>>()
              {
                  new Dictionary<string, long>()

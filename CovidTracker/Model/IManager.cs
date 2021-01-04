@@ -7,7 +7,7 @@ namespace CovidTracker.Model
 {
     public interface IManager
     {
-        // list of top 3 months and percent of growth - 1
+        // list of top 3 months and percent of growth  - 1
         List<Dictionary<string, string>> TopMonthsGrowthForState(string state_str_id);
 
         // list of city and month with the most significant growth - 2

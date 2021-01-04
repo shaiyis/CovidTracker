@@ -29,7 +29,7 @@
             } else {
                 percents = response.data;
             }
-         // keys: average
+         // keys:  average
 
             //  $scope.months = response.data
         }, function error(response) {
