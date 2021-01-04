@@ -39,18 +39,19 @@ namespace CovidTracker.Controllers
         }
 
 
+        // 2
         [HttpGet]
-        [Route("usa_avg")]
-        public ActionResult GetAvgOfAfectedAllUSA()
+        [Route("county_growth")]
+        public ActionResult TopMonthGrowthForCounty([FromQuery(Name = "state_str_id")] string state_str_id)
         {
-
-            string avg = manager.GetAvgOfAfectedAllUSA();
-            if (avg == null)
+            var res = manager.TopMonthGrowthForCounty(state_str_id);
+            if (res == null)
             {
                 return BadRequest("Connection failure");
             }
-            return Ok(avg);
+            return Ok(res);
         }
+
 
 
         // 3
@@ -118,13 +119,13 @@ namespace CovidTracker.Controllers
             return Ok(res);
         }
 
-
-
+        // 4
         [HttpGet]
-        [Route("county_growth")]
-        public ActionResult TopMonthGrowthForCounty([FromQuery(Name = "state_str_id")] string state_str_id)
+        [Route("usa_avg")]
+        public ActionResult GetAvgOfAfectedAllUSA()
         {
-            var res = manager.TopMonthGrowthForCounty(state_str_id);
+
+            var res = manager.GetAvgOfAfectedAllUSA();
             if (res == null)
             {
                 return BadRequest("Connection failure");
@@ -132,6 +133,7 @@ namespace CovidTracker.Controllers
             return Ok(res);
         }
 
+        // 5
         [HttpGet]
         [Route("map_coloring")]
         public ActionResult UpdatedPercentPerState()

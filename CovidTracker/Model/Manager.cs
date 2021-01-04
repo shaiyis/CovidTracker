@@ -58,6 +58,52 @@ namespace CovidTracker.Model
             }
         }
 
+        // 2
+        public List<Dictionary<string, string>> TopMonthGrowthForCounty(string state_str_id)
+        {
+            MySqlConnection conn = new MySqlConnection(connStr);
+            try
+            {
+                conn.Open();
+                string sql = $"SELECT t1.county, MONTHNAME(t2.the_date) as max_diff_month " +
+                    $"FROM covid_us.us_counties AS t1 JOIN covid_us.us_counties AS t2 USING (county_id) JOIN " +
+                    $"(SELECT t1.*,MAX(t2.cases-t1.cases) AS max_diff_cases " +
+                    $"FROM covid_us.us_counties AS t1 JOIN covid_us.us_counties AS t2 USING(county_id) " +
+                    $"WHERE t1.state_id= (" + getStateIdQuery(state_str_id) + " group by state_id) " +
+                    $"AND t1.the_date = LAST_DAY(t1.the_date) AND t2.the_date = LAST_DAY(t2.the_date) " +
+                    $"AND MONTH(t2.the_date) = MONTH(t1.the_date) + 1 group by t1.county) as inner_table USING(county_id) " +
+                    $"where t1.state_id= (" + getStateIdQuery(state_str_id) + " group by state_id)" +
+                    $"AND t1.the_date = LAST_DAY(t1.the_date) AND t2.the_date = LAST_DAY(t2.the_date) " +
+                    $"AND MONTH(t2.the_date) = MONTH(t1.the_date) + 1 " +
+                    $"AND inner_table.max_diff_cases = t2.cases - t1.cases order by t1.county; ";
+                MySqlCommand cmd = new MySqlCommand(sql, conn);
+                MySqlDataReader rdr = cmd.ExecuteReader();
+                List<Dictionary<string, string>> ret = new List<Dictionary<string, string>>();
+
+                while (rdr.Read())
+                {
+                    string county = rdr["county"].ToString();
+                    string max_diff_month = rdr["max_diff_month"].ToString();
+                    ret.Add(new Dictionary<string, string>()
+                    {
+                        { "county", county },
+                        { "max_diff_month" , max_diff_month }
+                    });
+                }
+                rdr.Close();
+                return ret;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
+            }
+        }
+
 
 
         // 3 
@@ -106,23 +152,32 @@ namespace CovidTracker.Model
         }
 
         // 4 
-        public string GetAvgOfAfectedAllUSA()
+        public List<Dictionary<string, string>> GetAvgOfAfectedAllUSA()
         {
             MySqlConnection conn = new MySqlConnection(connStr);
             try
             {
                 conn.Open();
-                string sql = $"";
+                string sql = $"SELECT AVG(distribution_data.cases) as average " +
+                    $"FROM ( SELECT unique_state.cases, unique_state.state_id, NTILE(10) OVER (ORDER BY unique_state.cases) as the_partition " +
+                    $"FROM (SELECT us.state_id,us.cases from covid_us.us_states as us join (Select Max(the_date) as the_date, state_id FROM " +
+                    $" covid_us.us_states group by state_id) as update_date using (state_id) " +
+                    $"where us.the_date = update_date.the_date and us.state_id = update_date.state_id) as unique_state) as distribution_data " +
+                    $"WHERE the_partition IN (2,3,4,5,6,7,8,9); ";
                 MySqlCommand cmd = new MySqlCommand(sql, conn);
                 MySqlDataReader rdr = cmd.ExecuteReader();
-                string avg = "";
+                List<Dictionary<string, string>> ret = new List<Dictionary<string, string>>();
 
                 while (rdr.Read())
                 {
-                    avg = rdr["percent"].ToString();
+                    string average = rdr["average"].ToString();
+                    ret.Add(new Dictionary<string, string>()
+                    {
+                        { "average", average }
+                    });
                 }
                 rdr.Close();
-                return avg;
+                return ret;
             }
             catch (Exception)
             {
@@ -148,54 +203,31 @@ namespace CovidTracker.Model
         }*/
 
 
-        public List<Dictionary<string, string>> TopMonthGrowthForCounty(string state_str_id)
-        {
-            MySqlConnection conn = new MySqlConnection(connStr);
-            try
-            {
-                conn.Open();
-                string sql = $"";
-                MySqlCommand cmd = new MySqlCommand(sql, conn);
-                MySqlDataReader rdr = cmd.ExecuteReader();
-                List<Dictionary<string, string>> ret = new List<Dictionary<string, string>>();
-
-                while (rdr.Read())
-                {
-                    string county = rdr["county"].ToString();
-                    string month = rdr["month"].ToString();
-                    //ret.Add(new Dictionary<string, string>(county, month));
-                }
-                rdr.Close();
-                return ret;
-            }
-            catch (Exception)
-            {
-                return null;
-            }
-            finally
-            {
-                if (conn != null)
-                    conn.Close();
-            }
-        }
-
-
+        // 5
         public List<Dictionary<string, string>> UpdatedPercentPerState()
         {
             MySqlConnection conn = new MySqlConnection(connStr);
             try
             {
                 conn.Open();
-                string sql = $"";
+                string sql = $"SELECT t2.state_str_id, round(t1.cases/t2.population * 100, 2) as percent FROM " +
+                    $"covid_us.us_states as t1 join covid_us.states_ids_and_population as t2 USING(state_id) " +
+                    $"WHERE t1.the_date = (select max(the_date) from covid_us.us_states where state_id = t1.state_id) " +
+                    $"and t2.state_str_id = (select state_str_id from covid_us.states_ids_and_population where state_id = t1.state_id) " +
+                    $"order by t1.state_id; ";
                 MySqlCommand cmd = new MySqlCommand(sql, conn);
                 MySqlDataReader rdr = cmd.ExecuteReader();
                 List<Dictionary<string, string>> ret = new List<Dictionary<string, string>>();
 
                 while (rdr.Read())
                 {
-                    string state = rdr["state"].ToString();
-                    int percent = Int32.Parse(rdr["percent"].ToString());
-                    //ret.Add(new KeyValuePair<string, int>(state, percent));
+                    string state_str_id = rdr["state_str_id"].ToString();
+                    string percent = rdr["percent"].ToString();
+                    ret.Add(new Dictionary<string, string>()
+                    {
+                        { "state_str_id", state_str_id },
+                        { "percent" , percent }
+                    });
                 }
                 rdr.Close();
                 return ret;

@@ -17,7 +17,7 @@ namespace CovidTracker.Model
         List<Dictionary<string, string>> InfectedGraphPerState(string state_str_id);
 
         // 4
-        string GetAvgOfAfectedAllUSA();
+        List<Dictionary<string, string>> GetAvgOfAfectedAllUSA();
 
         // Get Updated Percent Of Affected Per State (for map coloring) - 5
         List<Dictionary<string, string>> UpdatedPercentPerState();

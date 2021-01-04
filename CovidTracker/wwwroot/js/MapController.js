@@ -1,6 +1,8 @@
 ﻿app.controller('MapController', function ($scope, $http) {
     var percents = {}
 
+
+    // 5
     // check percents for each country
     $http.get('map_coloring')
         .then(function success(response) {
@@ -17,6 +19,7 @@
             console.log(response.statusText);
         });
 
+
     // all USA
     $http.get('usa_avg')
         .then(function success(response) {
@@ -26,7 +29,7 @@
             } else {
                 percents = response.data;
             }
-         // keys: percent
+         // keys: average
 
             //  $scope.months = response.data
         }, function error(response) {
@@ -184,6 +187,7 @@
             });
         
 
+        // 2
         // get month with greatest growth for each county
         var getCountyUrl = 'covid/county_growth' + "?state_str_id=" + state_str_id
         $http.get(getCountyUrl)
@@ -192,8 +196,8 @@
                 if (response.status != 200) {
                     console.log(response.statusText);
                 } else {
-                    // keys: county, month
-                    $scope.counties = [{ county: "noa", month: "July" }, { county: "Gilad", month: "August" }, { county: "Israel", month: "September" }];
+                    // keys: county, max_diff_month
+                    $scope.counties = [{ county: "noa", max_diff_month: "July" }, { county: "Gilad", max_diff_month: "August" }, { county: "Israel", max_diff_month: "September" }];
                 }
 
                 //  $scope.months = response.data
