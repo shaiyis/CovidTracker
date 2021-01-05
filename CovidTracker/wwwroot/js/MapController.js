@@ -29,14 +29,14 @@
             } else {
                 percents = response.data;
             }
-         // keys:  average
+            // keys:  average
 
             //  $scope.months = response.data
         }, function error(response) {
             console.log(response.statusText);
         });
- 
-    
+
+
     var countryOfpatients = {};
     countryOfpatients["WA"] = "900"
     countryOfpatients["OR"] = "600"
@@ -89,12 +89,12 @@
                         "background-color": "#7CA82B",
                         "border-color": "#FFF",
                         items: {
-                           // "WA": {
-                           //     "background-color": contryColor["WA"]
-                           // },
+                            // "WA": {
+                            //     "background-color": contryColor["WA"]
+                            // },
                             //"VA": {
-                          //      "background-color": "#e38a0e"
-                           // },
+                            //      "background-color": "#e38a0e"
+                            // },
                         }
                     }
                 }
@@ -116,6 +116,7 @@
         graph.style.visibility = "visible";
         // get the current state
         var state_str_id = arguments[0].shapeid;
+        var state_str_id_query = "?state_str_id=" + state_str_id
         var currentState = zingchart.maps.getItemInfo('usa', state_str_id).tooltip.text;
         var graphTitle = document.getElementById("graph-title");
         graphTitle.style.visibility = "visible";
@@ -123,14 +124,15 @@
         $scope.numberOfConfirmedCases = 5000;
 
         // get 3 months with biggest grow in current state
-        $http.get('covid/state_growth')
+        var get3MonthsUrl = 'covid/state_growth' + state_str_id_query
+        $http.get(get3MonthsUrl)
             .then(function success(response) {
                 console.log("this is a success")
                 if (response.status != 200) {
                     console.log(response.statusText);
                 } else {
                     //keys: max_diff_month, growth
-                    $scope.months = [{ max_diff_month: "February", growth: 800 }, { max_diff_month: "March", growth: 600 }, { max_diff_month: "April", growth: 500 }];
+                    $scope.months = angular.fromJson(response.data);
                 }
 
                 //  $scope.months = response.data
@@ -138,9 +140,8 @@
                 console.log(response.statusText);
             });
 
-
         // get all casualties for the state for the last 6 months
-        var getStateUrl = 'covid/state_graph' + "?state_str_id=" + state_str_id
+        var getStateUrl = 'covid/state_graph' + state_str_id_query
         $http.get(getStateUrl)
             .then(function (response) {
                 console.log("got message");
@@ -153,40 +154,26 @@
 
                     listFromJson.forEach(function (item) {
                         // -1 to match index of graph
-                        listForGraph.push([item["month_as_number"]-1, item["cases"]]);
+                        listForGraph.push([parseInt(item["month_as_number"]) - 1, parseInt(item["cases"])]);
                     }
 
                     );
-                        
-                    if (state_str_id == "MT") {
-                        zingchart.exec('the-graph', 'setseriesdata', {
-                            graphid: 0,
-                            plotindex: 0,
+                    zingchart.exec('the-graph', 'setseriesdata', {
+                        graphid: 0,
+                        plotindex: 0,
 
-                            data: {
-                                values: listForGraph,
-                                lineColor: 'red'
+                        data: {
+                            values: listForGraph,
+                            lineColor: 'red'
 
-                            },
+                        },
 
-                        });
-                    } else {
-                        zingchart.exec('the-graph', 'setseriesdata', {
-                            graphid: 0,
-                            plotindex: 0,
-
-                            data: {
-
-                                values: [0, 30, 100, 100],
-                                lineColor: 'red'
-                            }
-                        });
-                    }
-                } 
+                    });
+                }
             }, function error(response) {
                 console.log(response.statusText);
             });
-        
+
 
         // 2
         // get month with greatest growth for each county
