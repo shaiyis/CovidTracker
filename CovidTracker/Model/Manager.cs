@@ -9,7 +9,7 @@ namespace CovidTracker.Model
     public class Manager : IManager
     {
         // TODO  change when submitting
-        private readonly string connStr = "server=localhost;user=root;database=covid_us;port=3306;password=mypassword";
+        private readonly string connStr = "server=localhost;user=root;database=covid_us;port=3306;password=noa17172727";
 
         private static string getStateIdQuery(string state_str_id)
         {
@@ -158,12 +158,16 @@ namespace CovidTracker.Model
             try
             {
                 conn.Open();
-                string sql = $"SELECT AVG(distribution_data.cases) as average " +
-                    $"FROM ( SELECT unique_state.cases, unique_state.state_id, NTILE(10) OVER (ORDER BY unique_state.cases) as the_partition " +
-                    $"FROM (SELECT us.state_id,us.cases from covid_us.us_states as us join (Select Max(the_date) as the_date, state_id FROM " +
-                    $" covid_us.us_states group by state_id) as update_date using (state_id) " +
-                    $"where us.the_date = update_date.the_date and us.state_id = update_date.state_id) as unique_state) as distribution_data " +
-                    $"WHERE the_partition IN (2,3,4,5,6,7,8,9); ";
+                string sql = "SELECT ROUND(AVG(distribution_data.percent), 2) as average " +
+                    "FROM (" +
+                    "SELECT percents_states.percent, percents_states.state_str_id, " +
+                    "NTILE(10) OVER (ORDER BY percents_states.percent) as the_partition " +
+                    "FROM (SELECT t2.state_str_id, ROUND(t1.cases/t2.population * 100, 2) as percent FROM  " +
+                    "covid_us.us_states as t1 join covid_us.states_ids_and_population as t2 USING(state_id) " +
+                    "WHERE t1.the_date = (SELECT max(the_date) FROM covid_us.us_states WHERE state_id = t1.state_id) " +
+                    "AND t2.state_str_id = (SELECT state_str_id FROM covid_us.states_ids_and_population WHERE state_id = t1.state_id) " +
+                    "order by t1.state_id) as percents_states) as distribution_data " +
+                    "WHERE the_partition IN (2,3,4,5,6,7,8,9);";
                 MySqlCommand cmd = new MySqlCommand(sql, conn);
                 MySqlDataReader rdr = cmd.ExecuteReader();
                 List<Dictionary<string, string>> ret = new List<Dictionary<string, string>>();

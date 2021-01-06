@@ -11,85 +11,77 @@
             if (response.status != 200) {
                 console.log(response.statusText);
             } else {
-                percents = response.data;
+                var elementContainsMap = document.getElementById('the-map');
+                elementContainsMap.children[0].children[0].style.position = "relative";
+                percents = angular.fromJson(response.data);
+                var percents_dictionary = {};
+                percents.forEach(function (item) {
+                    percents_dictionary[item['state_str_id']] = parseFloat(item['percent']);
+                });
+                var countryColor = {}
+                for (var key of Object.keys(percents_dictionary)) {
+                    if (percents_dictionary[key] > 10) {
+                        countryColor[key] = "#a82b48"
+                    }
+                    if (percents_dictionary[key] > 5 && percents_dictionary[key] <= 10) {
+                        countryColor[key] = "#e38a0e"
+                    }
+                    if (percents_dictionary[key] <= 5) {
+                        countryColor[key] = "#7CA82B"
+                    }
+                }
                 // keys: state_str_id, percent
-            }
 
+                $scope.myJson = {
+                    gui: {
+                        contextMenu: {
+                            button: {
+                                visible: false
+                            }
+                        }
+                    },
+                    globals: {
+                        shadow: false
+                    },
+                    "background-color": "#FFFFFF",
+                    shapes: [
+                        {
+                            type: 'zingchart.maps',
+                            options: {
+                                name: 'usa',
+                                style: {
+                                    label: {
+                                        visible: true
+
+                                    },
+                                    "background-color": "#7CA82B",
+                                    "border-color": "#FFF",
+                                    items: {
+
+                                    }
+                                }
+                            }
+                        }
+                    ]
+                };
+                for (var key of Object.keys(countryColor)) {
+                    var color = countryColor[key];
+                    $scope.myJson.shapes[0].options.style.items[key] = {
+                        "background-color": color
+                    }
+                }
+            }
             //  $scope.months = response.data
         }, function error(response) {
             console.log(response.statusText);
         });
 
-    // all USA-chek with gilad
-    var usa_avg = 'covid/usa_avg'
-    $http.get(usa_avg)
-        .then(function success(response) {
-            console.log("this is a success")
-            if (response.status != 200) {
-                console.log(response.statusText);
-            } else {
-                percents = response.data;
-            }
-            // keys:  average
 
-            //  $scope.months = response.data
-        }, function error(response) {
-            console.log(response.statusText);
-        });
  
     
 
 
-    //check how we get back and iterate on this 
-    var contryColor = {}
-    for (var key of Object.keys(percents)) {
-        if (percents[key] > 0.75) {
-            contryColor[key] = "#a82b48"
-        }
-        if (percents[key] > 0.5 && percents[key] <= 0.75) {
-            contryColor[key] = "#e38a0e"
-        }
-        if (percents[key] <= 0.5) {
-            contryColor[key] = "#7CA82B"
-        }
-    }
-    $scope.myJson = {
-        gui: {
-            contextMenu: {
-                button: {
-                    visible: false
-                }
-            }
-        },
-        globals: {
-            shadow: false
-        },
-        "background-color": "#FFFFFF",
-        shapes: [
-            {
-                type: 'zingchart.maps',
-                options: {
-                    name: 'usa',
-                    style: {
-                        label: {
-                            visible: true
 
-                        },
-                        "background-color": "#7CA82B",
-                        "border-color": "#FFF",
-                        items: {
-                        }
-                    }
-                }
-            }
-        ]
-    };
-    for (var key of Object.keys(contryColor)) {
-        var color = contryColor[key];
-        $scope.myJson.shapes[0].options.style.items[key] = {
-            "background-color": color
-        }
-    }
     zingchart.shape_click = function (e) {
         console.log(arguments);
 
@@ -169,8 +161,8 @@
                 } else {
                     // keys: county, month
                     //$scope.counties = [{ county: "noa", month: "July" }, { county: "Gilad", month: "August" }, { county: "Israel", month: "September" }];
-                    country_mounth = response.data;
-                    $scope.counties = country_mounth
+                    country_mounth = angular.fromJson(response.data);
+                    $scope.counties = country_mounth;
                 }
 
                 //  $scope.months = response.data

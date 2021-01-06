@@ -19,7 +19,7 @@
 <body ng-app="myApp">
     <div ng-controller="AllUsaController">
         <p id="all-casualties" style="visibility: hidden;text-align: center; font-size: 50px; font-family: Gisha; margin: 20px">
-            USA has {{percent}}% casualties
+            USA has {{percent}}% casualties in average
         </p>
     </div>
     <div ng-controller="MapController">
@@ -41,10 +41,10 @@
                         {{currentState}}
                     </h5>
                 </div>
-                <div class="modal-body">
-                     <p id="casualties" style="text-align:center; font-size: 30px; font-family: Gisha; margin: 20px">
-                         Counties
-                     </p>
+                <div class="modal-body" style="overflow-x:auto;">
+                    <p id="casualties" style="text-align:center; font-size: 30px; font-family: Gisha; margin: 20px">
+                        Counties
+                    </p>
                     <table id="table-county-month" class="styled-table">
                         <thead>
                             <tr>
@@ -52,13 +52,13 @@
                                 <th>Month with biggest growth</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody style="overflow-y: scroll; height:200px;display:block; width:50vw">
                             <tr ng-repeat="x in counties">
                                 <td>
                                     {{ x.county }}
                                 </td>
                                 <td>
-                                    {{ x.month }}
+                                    {{ x.max_diff_month }}
                                 </td>
                             </tr>
                         </tbody>
@@ -133,16 +133,6 @@
     <script src="js/AllUsaController.js"></script>
     <script src="js/MapController.js"></script>
     <script src="js/GraphController.js"></script>
-
-    <script>
-        // make the map relative in the html
-        window.onload = function () {
-            var elementContainsMap = document.getElementById('the-map');
-            elementContainsMap.children[0].children[0].style.position = "relative";
-            var allCasualties = document.getElementById("all-casualties");
-            allCasualties.style.visibility = "visible";
-        }
-    </script>
    
 </body>
 
