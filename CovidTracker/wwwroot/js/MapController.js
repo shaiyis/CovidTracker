@@ -2,7 +2,8 @@
     var percents = {}
 
     // check percents for each country
-    $http.get('map_coloring')
+    var map_coloring = 'covid/map_coloring'
+    $http.get(map_coloring)
         .then(function success(response) {
             console.log("this is a success")
             if (response.status != 200) {
@@ -17,8 +18,9 @@
             console.log(response.statusText);
         });
 
-    // all USA
-    $http.get('usa_avg')
+    // all USA-chek with gilad
+    var usa_avg = 'covid/usa_avg'
+    $http.get(usa_avg)
         .then(function success(response) {
             console.log("this is a success")
             if (response.status != 200) {
@@ -34,30 +36,18 @@
         });
  
     
-    var countryOfpatients = {};
-    countryOfpatients["WA"] = "900"
-    countryOfpatients["OR"] = "600"
-    countryOfpatients["IL"] = "800"
-    countryOfpatients["OH"] = "600"
 
-
-
-    var countryNumberPeople = {};
-    countryNumberPeople["WA"] = "1000"
-    countryNumberPeople["OR"] = "1000"
-    countryNumberPeople["IL"] = "1000"
-    countryNumberPeople["OH"] = "1000"
 
     //check how we get back and iterate on this 
     var contryColor = {}
-    for (var key of Object.keys(countryOfpatients)) {
-        if (countryOfpatients[key] / countryNumberPeople[key] > 0.75) {
+    for (var key of Object.keys(percents)) {
+        if (percents[key] > 0.75) {
             contryColor[key] = "#a82b48"
         }
-        if (countryOfpatients[key] / countryNumberPeople[key] > 0.5 && countryOfpatients[key] / countryNumberPeople[key] <= 0.75) {
+        if (percents[key] > 0.5 && percents[key] <= 0.75) {
             contryColor[key] = "#e38a0e"
         }
-        if (countryOfpatients[key] / countryNumberPeople[key] <= 0.5) {
+        if (percents[key] <= 0.5) {
             contryColor[key] = "#7CA82B"
         }
     }
@@ -86,12 +76,6 @@
                         "background-color": "#7CA82B",
                         "border-color": "#FFF",
                         items: {
-                           // "WA": {
-                           //     "background-color": contryColor["WA"]
-                           // },
-                            //"VA": {
-                          //      "background-color": "#e38a0e"
-                           // },
                         }
                     }
                 }
@@ -184,7 +168,7 @@
                 console.log(response.statusText);
             });
         
-
+        
         // get month with greatest growth for each county
         var getCountyUrl = 'covid/county_growth' + "?state_str_id=" + state_str_id
         $http.get(getCountyUrl)
@@ -194,13 +178,17 @@
                     console.log(response.statusText);
                 } else {
                     // keys: county, month
-                    $scope.counties = [{ county: "noa", month: "July" }, { county: "Gilad", month: "August" }, { county: "Israel", month: "September" }];
+                    //$scope.counties = [{ county: "noa", month: "July" }, { county: "Gilad", month: "August" }, { county: "Israel", month: "September" }];
+                    country_mounth = response.data;
+                    $scope.counties = country_mounth
                 }
 
                 //  $scope.months = response.data
             }, function error(response) {
                 console.log(response.statusText);
             });
+
+
         // zoom to map
         zingchart.maps.zoomToItem('usa', state_str_id);
     };
