@@ -25,29 +25,45 @@ namespace CovidTracker.Controllers
             return Ok("Welcome to my server!");
         }
 
-
+        //1
         [HttpGet]
-        [Route("usa_avg")]
-        public ActionResult GetAvgOfAfectedAllUSA()
+        [Route("state_growth")]
+        public ActionResult TopMonthsGrowthForState([FromQuery(Name = "state_str_id")] string state_str_id)
         {
-
-            string avg = manager.GetAvgOfAfectedAllUSA();
-            if (avg == null)
+            var res = manager.TopMonthsGrowthForState(state_str_id);
+            if (res == null)
             {
                 return BadRequest("Connection failure");
             }
-            return Ok(avg);
+            return Ok(res);
         }
 
+
+        // 2
+        [HttpGet]
+        [Route("county_growth")]
+        public ActionResult TopMonthGrowthForCounty([FromQuery(Name = "state_str_id")] string state_str_id)
+        {
+            var res = manager.TopMonthGrowthForCounty(state_str_id);
+            if (res == null)
+            {
+                return BadRequest("Connection failure");
+            }
+            return Ok(res);
+        }
+
+
+
+        // 3
         [HttpGet]
         [Route("state_graph")]
         public ActionResult InfectedGraphPerState([FromQuery(Name = "state_str_id")] string state_str_id)
         {
 
-            //var res = manager.InfectedGraphPerState(state_str_id);
+            var res = manager.InfectedGraphPerState(state_str_id);
 
-           
-            var res = new List<Dictionary<string, long>>()
+           // todo  delete this example
+            /*var res = new List<Dictionary<string, long>>()
              {
                  new Dictionary<string, long>()
                  {
@@ -94,7 +110,7 @@ namespace CovidTracker.Controllers
                      { "month_as_number", 11 },
                      { "cases" , 157359 }
                  },
-             };
+             };*/
 
             if (res == null)
             {
@@ -103,13 +119,13 @@ namespace CovidTracker.Controllers
             return Ok(res);
         }
 
-
-
+        // 4
         [HttpGet]
-        [Route("county_growth")]
-        public ActionResult TopMonthGrowthForCounty([FromQuery(Name = "state_str_id")] string state_str_id)
+        [Route("usa_avg")]
+        public ActionResult GetAvgOfAfectedAllUSA()
         {
-            List<KeyValuePair<string, string>> res = manager.TopMonthGrowthForCounty(state_str_id);
+
+            var res = manager.GetAvgOfAfectedAllUSA();
             if (res == null)
             {
                 return BadRequest("Connection failure");
@@ -117,23 +133,12 @@ namespace CovidTracker.Controllers
             return Ok(res);
         }
 
-        [HttpGet]
-        [Route("state_growth")]
-        public ActionResult TopMonthsGrowthForState([FromQuery(Name = "state_str_id")] string state_str_id)
-        {
-            List<KeyValuePair<string, int>> res = manager.TopMonthsGrowthForState(state_str_id);
-            if (res == null)
-            {
-                return BadRequest("Connection failure");
-            }
-            return Ok(res);
-        }
-
+        // 5
         [HttpGet]
         [Route("map_coloring")]
         public ActionResult UpdatedPercentPerState()
         {
-            List<KeyValuePair<string, int>> res = manager.UpdatedPercentPerState();
+            var res = manager.UpdatedPercentPerState();
             if (res == null)
             {
                 return BadRequest("Connection failure");
