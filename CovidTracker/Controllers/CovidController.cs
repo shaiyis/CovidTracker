@@ -62,56 +62,6 @@ namespace CovidTracker.Controllers
 
             var res = manager.InfectedGraphPerState(state_str_id);
 
-           // todo  delete this example
-            /*var res = new List<Dictionary<string, long>>()
-             {
-                 new Dictionary<string, long>()
-                 {
-                     { "month_as_number", 3 },
-                     {"cases" , 564 }
-                 },
-                 new Dictionary<string, long>()
-                 {
-                     { "month_as_number", 4 },
-                     { "cases" , 3281 }
-                 },
-                 new Dictionary<string, long>()
-                 {
-                     { "month_as_number", 5 },
-                     { "cases" , 7253 }
-                 },
-                 new Dictionary<string, long>()
-                 {
-                     { "month_as_number", 6 },
-                     { "cases" , 20777 }
-                 },
-                 new Dictionary<string, long>()
-                 {
-                     { "month_as_number", 7 },
-                     { "cases" , 42511 }
-                 },
-                 new Dictionary<string, long>()
-                 {
-                     { "month_as_number", 8 },
-                     { "cases" , 61224 }
-                 },
-                 new Dictionary<string, long>()
-                 {
-                     { "month_as_number", 9 },
-                     { "cases" , 83697 }
-                 },
-                 new Dictionary<string, long>()
-                 {
-                     { "month_as_number", 10 },
-                     { "cases" , 112190 }
-                 },
-                 new Dictionary<string, long>()
-                 {
-                     { "month_as_number", 11 },
-                     { "cases" , 157359 }
-                 },
-             };*/
-
             if (res == null)
             {
                 return BadRequest("Connection failure");
