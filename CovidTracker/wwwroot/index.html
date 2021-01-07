@@ -45,24 +45,26 @@
                     <p id="casualties" style="text-align:center; font-size: 30px; font-family: Gisha; margin: 20px">
                         Counties
                     </p>
-                    <table id="table-county-month" class="styled-table">
-                        <thead>
-                            <tr>
-                                <th>County</th>
-                                <th>Month with biggest growth</th>
-                            </tr>
-                        </thead>
-                        <tbody style="overflow-y: scroll; height:200px;display:block; width:50vw">
-                            <tr ng-repeat="x in counties">
-                                <td>
-                                    {{ x.county }}
-                                </td>
-                                <td>
-                                    {{ x.max_diff_month }}
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div style="overflow-y: scroll; height:200px;display:block; width:100%">
+                        <table id="table-county-month" class="styled-table">
+                            <thead>
+                                <tr>
+                                    <th>County</th>
+                                    <th>Month with biggest growth</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="x in counties">
+                                    <td>
+                                        {{ x.county }}
+                                    </td>
+                                    <td style="text-align:center">
+                                        {{ x.max_diff_month }}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                     <p id="casualties" style="text-align:center; font-size: 30px; font-family: Gisha; margin: 20px">
                         Months with biggest growth in casualties
                     </p>
