@@ -152,6 +152,8 @@
 
         // 2
         // get month with greatest growth for each county
+        var table_growth = document.getElementById("scrolledTable");
+        table_growth.style.visibility = "hidden";
         var getCountyUrl = 'covid/county_growth' + "?state_str_id=" + state_str_id
         $http.get(getCountyUrl)
             .then(function success(response) {
@@ -160,9 +162,11 @@
                     console.log(response.statusText);
                 } else {
                     // keys: county, month
-                    //$scope.counties = [{ county: "noa", month: "July" }, { county: "Gilad", month: "August" }, { county: "Israel", month: "September" }];
+                    table_growth.scrollTop=0;
                     country_mounth = angular.fromJson(response.data);
                     $scope.counties = country_mounth;
+                    // make graph visible
+                    table_growth.style.visibility = "visible";
                 }
 
                 //  $scope.months = response.data
