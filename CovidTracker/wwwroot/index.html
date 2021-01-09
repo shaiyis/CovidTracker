@@ -17,6 +17,74 @@
     <!-- <script src="js/TestController.js"></script>-->
 </head>
 <body ng-app="myApp">
+    <div id="the-loader-beginning" class="loader-wrapper">
+        <span class="loader"><span class="loader-inner"></span></span>
+    </div>
+    <style >
+        .loader-wrapper {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            background-color: #242f3f;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .loader {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            position: relative;
+            border: 4px solid #Fff;
+            animation: loader 2s infinite ease;
+        }
+        @keyframes loader {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            25% {
+                transform: rotate(180deg);
+            }
+
+            50% {
+                transform: rotate(180deg);
+            }
+
+            75% {
+                transform: rotate(360deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes loader-inner {
+            0% {
+                height: 0%;
+            }
+
+            25% {
+                height: 0%;
+            }
+
+            50% {
+                height: 100%;
+            }
+
+            75% {
+                height: 100%;
+            }
+
+            100% {
+                height: 0%;
+            }
+        }
+    </style>
     <div ng-controller="AllUsaController">
         <p id="all-casualties" style="visibility: hidden;text-align: center; font-size: 50px; font-family: Gisha; margin: 20px">
             USA has {{percent}}% casualties in average
@@ -45,7 +113,7 @@
                     <p id="casualties" style="text-align:center; font-size: 30px; font-family: Gisha; margin: 20px">
                         Counties
                     </p>
-                    <div id ="scrolledTable"style="overflow-y: scroll; height:200px;display:block; width:100%;visibility:hidden">
+                    <div id="scrolledTable" style="overflow-y: scroll; height:200px;display:block; width:100%;visibility:hidden">
                         <table id="table-county-month" class="styled-table">
                             <thead>
                                 <tr>
@@ -128,8 +196,7 @@
                 }
     </style>
     <script>
-        zingchart.MODULESDIR = 'https://cdn.zingchart.com/2.9.2/modules/';
-        zingchart.loadModules('maps,maps-usa');
+      
     </script>
     <script src="js/App.js"></script>
     <script src="js/AllUsaController.js"></script>
