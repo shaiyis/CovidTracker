@@ -13,6 +13,7 @@ namespace CovidTracker.Model
 
         private readonly string connStr = "server=localhost;user=root;database=covid_us;port=3306;password=mypassword";
 
+        // get the query for getting state_id given state_str_id
         private static string getStateIdQuery(string state_str_id)
         {
             return "Select state_id from states_ids_and_population where state_str_id = '" + state_str_id + "'";
@@ -38,6 +39,7 @@ namespace CovidTracker.Model
 
                 while (rdr.Read())
                 {
+                    // creating new dictionary of the query output and adding it to the list of dictionaries  
                     string max_diff_month = rdr["max_diff_month"].ToString();
                     string growth = rdr["growth"].ToString();
                     ret.Add(new Dictionary<string, string>()

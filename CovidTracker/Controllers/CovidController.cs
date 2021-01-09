@@ -30,11 +30,13 @@ namespace CovidTracker.Controllers
         [Route("state_growth")]
         public ActionResult TopMonthsGrowthForState([FromQuery(Name = "state_str_id")] string state_str_id)
         {
+            // asking the manager to ask the DB for the result 
             var res = manager.TopMonthsGrowthForState(state_str_id);
             if (res == null)
             {
                 return BadRequest("Connection failure");
             }
+            // return the model answer to the UI
             return Ok(res);
         }
 
