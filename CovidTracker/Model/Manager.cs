@@ -9,7 +9,7 @@ namespace CovidTracker.Model
     public class Manager : IManager
     {
         // TODO  change when submitting
-        private readonly string connStr = "server=localhost;user=root;database=covid_us;port=3306;password=Mcgilad1l@";
+        private readonly string connStr = "server=localhost;user=root;database=covid_us;port=3306;password=mypassword";
 
         private static string getStateIdQuery(string state_str_id)
         {
@@ -129,13 +129,6 @@ namespace CovidTracker.Model
                         { "month_as_number", month_as_number },
                         { "cases" , cases }
                     });
-                    // todo delete
-                    /*List<int> date_list = convertDate(date);
-                    TimeSpan epochTicks = new TimeSpan(new DateTime(1970, 1, 1).Ticks);
-                    TimeSpan unixTicks = new TimeSpan(new DateTime(date_list[0], date_list[1], date_list[2]).Ticks) - epochTicks;
-                    Int32 unixTimestamp = (Int32)unixTicks.TotalSeconds;
-                    // add to res the unix time and cases
-                    ret.Add(new KeyValuePair<int, int>(unixTimestamp, cases));*/
                 }
                 rdr.Close();
                 return ret;
@@ -194,17 +187,6 @@ namespace CovidTracker.Model
             }
         }
 
-        /*private static List<int> convertDate(string date)
-        {
-            List<int> ret = new List<int>();
-            string[] list = date.Split("-");
-            for (int i = 0; i < 3; i++)
-            {
-                int val = Int32.Parse(list[i]);
-                ret.Add(val);
-            }
-            return ret;
-        }*/
 
 
         // 5
