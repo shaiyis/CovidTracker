@@ -11,8 +11,7 @@
             if (response.status != 200) {
                 console.log(response.statusText);
             } else {
-                zingchart.MODULESDIR = 'https://cdn.zingchart.com/2.9.2/modules/';
-                zingchart.loadModules('maps,maps-usa');
+               
                 var elementContainsMap = document.getElementById('the-map');
                 elementContainsMap.children[0].children[0].style.position = "relative";
                 percents = angular.fromJson(response.data);
@@ -72,8 +71,11 @@
                         "background-color": color
                     }
                 }
-                var loader = document.getElementById('the-loader-beginning');
-                loader.remove();
+                //setTimeout(function () {
+                    var loader = document.getElementById('the-loader-beginning');
+                    loader.remove();
+                //}, 500);
+                
                // angular.element(loader).trigger('fadeout');
             }
             //  $scope.months = response.data

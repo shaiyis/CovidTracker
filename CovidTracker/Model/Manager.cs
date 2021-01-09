@@ -9,7 +9,7 @@ namespace CovidTracker.Model
     public class Manager : IManager
     {
         // TODO  change when submitting
-        private readonly string connStr = "server=localhost;user=root;database=covid_us;port=3306;password=mypassword";
+        private readonly string connStr = "server=localhost;user=root;database=covid_us;port=3306;password=Mcgilad1l@";
 
         private static string getStateIdQuery(string state_str_id)
         {
