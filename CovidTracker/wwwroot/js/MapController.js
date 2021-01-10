@@ -22,22 +22,22 @@
                 //Create a dictionary by which we will color the map
                 var countryColor = {}
                 for (var key of Object.keys(percents_dictionary)) {
-                    //if the percents of the patints in this country is higher than 10 - we will color the country in red
+                    //if the percents of the patients in this country is higher than 10 - we will color the country in red
                     if (percents_dictionary[key] > 10) {
                         countryColor[key] = "#a82b48"
                     }
-                    //if the percents of the patints in this country is between 5 to 10 - we will color the country in orange
+                    //if the percents of the patients in this country is between 5 to 10 - we will color the country in orange
                     if (percents_dictionary[key] > 5 && percents_dictionary[key] <= 10) {
                         countryColor[key] = "#e38a0e"
                     }
-                    //if the percents of the patints in this country is lower than 5 - we will color the country in green
+                    //if the percents of the patients in this country is lower than 5 - we will color the country in green
                     if (percents_dictionary[key] <= 5) {
                         countryColor[key] = "#7CA82B"
                     }
                 }
-                
 
-                $scope.myJson = {
+                // json for zingchart map
+                $scope.mapJson = {
                     gui: {
                         contextMenu: {
                             button: {
@@ -73,23 +73,21 @@
                 //Paint the map according to the percents we get
                 for (var key of Object.keys(countryColor)) {
                     var color = countryColor[key];
-                    $scope.myJson.shapes[0].options.style.items[key] = {
+                    $scope.mapJson.shapes[0].options.style.items[key] = {
                         "background-color": color
                     }
                 }
-                
-                    var loader = document.getElementById('the-loader-beginning');
-                    loader.remove();
+                // make loader disappear from screen after map is loaded
+                var loader = document.getElementById('the-loader-beginning');
+                loader.remove();
             }
         }, function error(response) {
             console.log(response.statusText);
         });
 
 
- 
-    
 
-
+    // happens when a country is clicked
 
     zingchart.shape_click = function (e) {
         console.log(arguments);
@@ -102,10 +100,10 @@
         var state_str_id = arguments[0].shapeid;
         var state_str_id_query = "?state_str_id=" + state_str_id
         var currentState = zingchart.maps.getItemInfo('usa', state_str_id).tooltip.text;
+        // put the current state in the graph title and make it visible
+        $scope.currentState = currentState;
         var graphTitle = document.getElementById("graph-title");
         graphTitle.style.visibility = "visible";
-        $scope.currentState = currentState;
-        $scope.numberOfConfirmedCases = 5000;
 
         // get 3 months with biggest grow in current state
         var get3MonthsUrl = 'covid/state_growth' + state_str_id_query
@@ -139,9 +137,8 @@
                     listFromJson.forEach(function (item) {
                         // -1 to match index of graph
                         listForGraph.push([parseInt(item["month_as_number"]) - 1, parseInt(item["cases"])]);
-                    }
-
-                    );
+                    });
+                    // changes the graph according to the list from server (for selected state)
                     zingchart.exec('the-graph', 'setseriesdata', {
                         graphid: 0,
                         plotindex: 0,

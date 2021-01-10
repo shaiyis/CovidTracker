@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <title>Covid-19 in the US</title>
+    <!--libraries: jquery, bootstrap, angularjs, zingchart-->
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular.min.js"></script>
     <script src="https://cdn.zingchart.com/zingchart.min.js"></script>
     <script src="https://cdn.zingchart.com/angular/zingchart-angularjs.js"></script>
@@ -10,12 +11,18 @@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
 
     <link rel="icon" type="image/png" href="lib/images/favicon.png" />
+
+    <!--css files-->
     <link rel="stylesheet" href="css/GraphStyle.css" />
     <link rel="stylesheet" href="css/LoaderStyle.css" />
     <link rel="stylesheet" href="css/TableStyle.css" />
+
+    <!--load maps-->
+
     <script>
         zingchart.MODULESDIR = 'https://cdn.zingchart.com/2.9.2/modules/';
         zingchart.loadModules('maps,maps-usa');
@@ -23,26 +30,35 @@
 
 </head>
 
-<body ng-app="myApp">
+<body ng-app="covidApp">
+    <!--loader when starting the application-->
     <div id="the-loader-beginning" class="loader-wrapper">
         <span class="loader"> <span class="loader-inner"> </span> </span>
     </div>
+
+
+    <!--the USA map-->
     <div ng-controller="AllUsaController">
         <p id="all-casualties" style="visibility: hidden;text-align: center; font-size: 50px; font-family: Gisha; margin: 20px">
             USA has {{percent}}% casualties in average
         </p>
     </div>
+
     <div ng-controller="MapController">
-        <div zingchart id="the-map" zc-json="myJson" zc-width="100%" zc-height="100%" />
+        <div zingchart id="the-map" zc-json="mapJson" zc-width="100%" zc-height="100%" />
     </div>
+
+    <!--The Graph for selected country-->
+
     <p id="graph-title" style="visibility: hidden;text-align:center; font-size: 40px; font-family: Gisha; margin-top: 20px">
         Covid-19 in 2020<br />{{currentState}}
     </p>
     <div ng-controller="GraphController">
 
-        <div zingchart id="the-graph" zc-json="myJson" zc-width="100%" zc-height="500px" style="visibility: hidden"></div>
+        <div zingchart id="the-graph" zc-json="graphJson" zc-width="100%" zc-height="500px" style="visibility: hidden"></div>
     </div>
 
+    <!-- pop-up window when pressing a country on the map-->
     <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -101,9 +117,9 @@
         </div>
     </div>
 
+    <!-- initialize angularjs app and the controllers-->>
     <script src="js/App.js"></script>
     <script src="js/AllUsaController.js"></script>
-   
     <script src="js/MapController.js"></script>
     <script src="js/GraphController.js"></script>
 

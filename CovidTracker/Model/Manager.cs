@@ -11,10 +11,10 @@ namespace CovidTracker.Model
         // TODO  change when submitting
         //private readonly string connStr = "server=localhost;user=team08;database=team08;port=3306;password=0008";
 
-        private readonly string connStr = "server=localhost;user=root;database=covid_us;port=3306;password=mypassword";
+        private readonly string connStr = "server=localhost;user=root;database=covid_us;port=3306;password=Mcgilad1l@";
 
         // get the query for getting state_id given state_str_id
-        private static string getStateIdQuery(string state_str_id)
+        private static string GetStateIdQuery(string state_str_id)
         {
             return "Select state_id from states_ids_and_population where state_str_id = '" + state_str_id + "'";
         }
@@ -29,7 +29,7 @@ namespace CovidTracker.Model
                 string sql = $"SELECT MONTHNAME(t2.the_date) as max_diff_month, inner_table.growth FROM  us_states AS t1 " +
                     $"JOIN us_states AS t2 USING(state_id) JOIN (SELECT t1.*, round(t1.cases/t2.cases * 100 - 100, 2) AS growth" +
                     $" FROM  us_states AS t1 JOIN  us_states AS t2 USING(state_id) WHERE " +
-                    $"t1.state_id = (" + getStateIdQuery(state_str_id) + " group by state_id) " +
+                    $"t1.state_id = (" + GetStateIdQuery(state_str_id) + " group by state_id) " +
                     $"AND t1.the_date = LAST_DAY(t1.the_date) AND t2.the_date = LAST_DAY(t2.the_date) AND MONTH(t2.the_date) = MONTH(t1.the_date) - 1) " +
                     $"as inner_table USING(state_id) where t1.the_date = LAST_DAY(t1.the_date) AND t2.the_date = LAST_DAY(t2.the_date) " +
                     $"AND MONTH(t2.the_date) = MONTH(t1.the_date) - 1 AND round(t1.cases/t2.cases * 100 - 100, 2) = inner_table.growth order by inner_table.growth desc limit 3; ";
@@ -73,10 +73,10 @@ namespace CovidTracker.Model
                     $"FROM  us_counties AS t1 JOIN  us_counties AS t2 USING (county_id) JOIN " +
                     $"(SELECT t1.*,MAX(t2.cases-t1.cases) AS max_diff_cases " +
                     $"FROM  us_counties AS t1 JOIN  us_counties AS t2 USING(county_id) " +
-                    $"WHERE t1.state_id= (" + getStateIdQuery(state_str_id) + " group by state_id) " +
+                    $"WHERE t1.state_id= (" + GetStateIdQuery(state_str_id) + " group by state_id) " +
                     $"AND t1.the_date = LAST_DAY(t1.the_date) AND t2.the_date = LAST_DAY(t2.the_date) " +
                     $"AND MONTH(t2.the_date) = MONTH(t1.the_date) + 1 group by t1.county) as inner_table USING(county_id) " +
-                    $"where t1.state_id= (" + getStateIdQuery(state_str_id) + " group by state_id)" +
+                    $"where t1.state_id= (" + GetStateIdQuery(state_str_id) + " group by state_id)" +
                     $"AND t1.the_date = LAST_DAY(t1.the_date) AND t2.the_date = LAST_DAY(t2.the_date) " +
                     $"AND MONTH(t2.the_date) = MONTH(t1.the_date) + 1 " +
                     $"AND inner_table.max_diff_cases = t2.cases - t1.cases order by t1.county; ";
@@ -119,7 +119,7 @@ namespace CovidTracker.Model
                 conn.Open();
                 string sql = $"SELECT Month(the_date) as the_month, cases FROM us_states " +
                     $"WHERE the_date = LAST_DAY(the_date) " +
-                    $"AND state_id= (" + getStateIdQuery(state_str_id) + " group by state_id) ORDER BY the_month;";
+                    $"AND state_id= (" + GetStateIdQuery(state_str_id) + " group by state_id) ORDER BY the_month;";
                 MySqlCommand cmd = new MySqlCommand(sql, conn);
                 MySqlDataReader rdr = cmd.ExecuteReader();
                 List<Dictionary<string, string>> ret = new List<Dictionary<string, string>>();

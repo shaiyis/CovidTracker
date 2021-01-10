@@ -1,5 +1,7 @@
 ﻿app.controller('GraphController', function ($scope) {
-    $scope.myJson = {
+
+    // json for zingchart graph
+    $scope.graphJson = {
 
         plotarea: {
             margin: 'dynamic',
