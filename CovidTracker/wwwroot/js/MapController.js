@@ -7,7 +7,7 @@
     $http.get(map_coloring)
         .then(function success(response) {
             if (response.status != 200) {
-                console.log(response.statusText);
+                alert("There was a problem with DB access, Refresh and Try again");
             } else {
                 //show the map
                 var elementContainsMap = document.getElementById('the-map');
@@ -82,7 +82,7 @@
                 loader.remove();
             }
         }, function error(response) {
-            console.log(response.statusText);
+                alert("There was a problem with DB access, Refresh and Try again");
         });
 
 
@@ -90,7 +90,6 @@
     // happens when a country is clicked
 
     zingchart.shape_click = function (e) {
-        console.log(arguments);
 
         $('#modal').modal('show');
         // make graph visible
@@ -109,9 +108,8 @@
         var get3MonthsUrl = 'covid/state_growth' + state_str_id_query
         $http.get(get3MonthsUrl)
             .then(function success(response) {
-                console.log("this is a success")
                 if (response.status != 200) {
-                    console.log(response.statusText);
+                    alert("There was a problem with DB access, Refresh and Try again");
                 } else {
                     //keys: max_diff_month, growth
                     $scope.months = angular.fromJson(response.data);
@@ -119,16 +117,15 @@
 
                 //  $scope.months = response.data
             }, function error(response) {
-                console.log(response.statusText);
+                    alert(response.statusText);
             });
 
         // get all casualties for the state for the last 6 months
         var getStateUrl = 'covid/state_graph' + state_str_id_query
         $http.get(getStateUrl)
             .then(function (response) {
-                console.log("got message");
                 if (response.status != 200) {
-                    console.log(response.statusText);
+                    alert("There was a problem with DB access, Refresh and Try again");
                 } else {
                     var listFromJson = angular.fromJson(response.data);
                     var listForGraph = [];
@@ -152,7 +149,7 @@
                     });
                 }
             }, function error(response) {
-                console.log(response.statusText);
+                    alert("There was a problem with DB access, Refresh and Try again");
             });
 
 
@@ -164,7 +161,7 @@
         $http.get(getCountyUrl)
             .then(function success(response) {
                 if (response.status != 200) {
-                    console.log(response.statusText);
+                    alert("There was a problem with DB access, Refresh and Try again");
                 } else {
                     //initialize the scroll bar
                     table_growth.scrollTop = 0;
@@ -175,7 +172,7 @@
                     table_growth.style.visibility = "visible";
                 }
             }, function error(response) {
-                console.log(response.statusText);
+                    alert("There was a problem with DB access, Refresh and Try again");
             });
 
 
